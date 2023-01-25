@@ -16,7 +16,6 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    private lateinit var imageView:ImageView
 
     companion object{
         val IMAGE_REQUEST_CODE = 100
@@ -50,7 +49,7 @@ class ProfileFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK){
-            imageView.setImageURI(data?.data)
+            binding.image.setImageURI(data?.data)
 
         }
     }

@@ -1,6 +1,7 @@
 package com.example.repeate4mlesson1
 
 import android.os.Bundle
+import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -32,5 +33,14 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        navController.navigate(
+            R.id.onBoardFragment
+        )
+
+        navController.addOnDestinationChangedListener{ _, des, _ ->
+            navView.visibility =
+                if (des.id == R.id.newTaskFragment|| des.id == R.id.onBoardFragment) View.GONE else View.VISIBLE
+        }
     }
 }
