@@ -29,6 +29,14 @@
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.repeate4mlesson1.ui.profile.ProfileFragment"
-        android:label="fragment_profile"
+        android:label="profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/onBoardFragment"
+        android:name="com.example.repeate4mlesson1.ui.onbording.OnBoardFragment"
+        android:label="Onboard" >
+        <action
+            android:id="@+id/action_onBoardFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 </navigation>
