@@ -1,6 +1,8 @@
 package com.example.repeate4mlesson1.ui.home
 
+import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.repeate4mlesson1.databinding.ItemTaskBinding
@@ -32,6 +34,11 @@ class TaskAdapter(private var tasks: MutableList<TaskModel>):RecyclerView.Adapte
         fun bind(task: TaskModel){
             binding.tvTitle.text = task.title
             binding.tvDesc.text = task.description
+
+            if(task.pictureUri != null){
+                binding.ivPicture.setImageURI(Uri.parse(task.pictureUri))
+                binding.ivPicture.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -40,5 +47,6 @@ class TaskAdapter(private var tasks: MutableList<TaskModel>):RecyclerView.Adapte
 data class TaskModel(
     val title: String,
     val description: String,
+    val pictureUri: String? =null,
 
 )

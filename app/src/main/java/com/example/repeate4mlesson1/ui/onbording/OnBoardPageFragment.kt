@@ -8,14 +8,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.example.repeate4mlesson1.R
 import com.example.repeate4mlesson1.databinding.FragmentOnboardBinding
 import com.example.repeate4mlesson1.databinding.FragmentOnboardPageBinding
 
 class OnBoardPageFragment: Fragment() {
+
+
     companion object{
         const val IS_LAST_ARG = "is_last"
-        const val IS_NEXT_ARG = "is_next"
+       
     }
     private var binding: FragmentOnboardPageBinding? = null
     override fun onCreateView(
@@ -36,14 +39,18 @@ class OnBoardPageFragment: Fragment() {
     }
 
     private fun initViews() {
+
+        binding?.dotsIndicator?.attachTo(
+            (parentFragment as OnBoardPageFragment.OnBoardListener).getViewPager()
+        )
+
         val data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getSerializable(BoardModel.ARG_KEY, BoardModel::class.java)
         } else{
             arguments?.getSerializable(BoardModel.ARG_KEY) as BoardModel
         }
         val isLast  = arguments?.getBoolean(IS_LAST_ARG)
-        val isNext = arguments?.getBoolean(IS_NEXT_ARG)
-
+        
         if (data != null){
             binding?.ivBoardPicture?.setImageResource(
                 data.imageResId
@@ -72,7 +79,7 @@ class OnBoardPageFragment: Fragment() {
             (parentFragment as OnBoardListener).onNextClicked()
         }
         binding?.btnStart?.setOnClickListener {
-            findNavController().navigate(R.id.action_onBoardFragment_to_navigation_home)
+            (parentFragment as OnBoardListener).onStartClicked()
         }
 
 
@@ -82,5 +89,7 @@ class OnBoardPageFragment: Fragment() {
         fun onSkipClicked()
         fun onNextClicked()
         fun onStartClicked()
+        fun getViewPager(): ViewPager2
+
     }
 }

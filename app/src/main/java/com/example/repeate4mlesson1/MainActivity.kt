@@ -9,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.repeate4mlesson1.databinding.ActivityMainBinding
+import com.example.repeate4mlesson1.utilits.Preferences
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,9 +35,18 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        navController.navigate(
-            R.id.onBoardFragment
-        )
+
+        if (Preferences(this).getHaveSeenOnBoarding()){
+            navController.navigate(
+                R.id.navigation_home)
+        }else{
+            navController.navigate(
+                R.id.onBoardFragment
+            )
+        }
+
+
+
 
         navController.addOnDestinationChangedListener{ _, des, _ ->
             navView.visibility =

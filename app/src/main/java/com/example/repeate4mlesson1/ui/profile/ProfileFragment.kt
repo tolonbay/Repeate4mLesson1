@@ -1,7 +1,9 @@
 package com.example.repeate4mlesson1.ui.profile
 
+import android.app.Activity.MODE_PRIVATE
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
@@ -9,16 +11,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.repeate4mlesson1.R
 import com.example.repeate4mlesson1.databinding.FragmentProfileBinding
+import com.example.repeate4mlesson1.utilits.Preferences
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    companion object{
-        val IMAGE_REQUEST_CODE = 100
+    private val imagePicker = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri ->
+        binding?.image?.setImageURI(uri)
+    }
+
+    private var uri: Uri? = null
+
+    companion object {
+        const val MEMORY_IMAGE = "image/*"
     }
 
     override fun onCreateView(
@@ -26,7 +38,6 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        // Inflate the layout for this fragment
 
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
@@ -35,29 +46,39 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initViews()
+
         binding.image.setOnClickListener {
-            openGallery()
-        }
-    }
-
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK)//,MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
-            intent.type = "image/*"                                     //type = "image/*"
-            startActivityForResult(intent, IMAGE_REQUEST_CODE)
-        }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK){
-            binding.image.setImageURI(data?.data)
+            imagePicker.launch("image/*")
 
         }
     }
 
+    private fun initViews() {
+        val preferences = Preferences(requireContext())
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+        //Если данные из SharedPreferences не null тогда их применим
+        if (preferences.getPrefTitle() != null) binding.etText.setText(
+            preferences.getPrefTitle()
+        )
+        if (preferences.getPrefImage() != "") {
+            binding.image.setImageURI(Uri.parse(preferences.getPrefImage()))
+        }
     }
-}
+
+
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            val preferences = Preferences(requireContext())
+            preferences.setPrefTitle(binding.etText.text.toString())
+            preferences.setPrefImage(uri.toString())
+
+
+        }
+
+        override fun onDestroy() {
+            super.onDestroy()
+            _binding = null
+        }
+    }

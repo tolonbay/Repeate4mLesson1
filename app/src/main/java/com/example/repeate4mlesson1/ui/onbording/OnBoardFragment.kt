@@ -10,12 +10,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.findFragment
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.example.repeate4mlesson1.R
 import com.example.repeate4mlesson1.databinding.FragmentDashboardBinding
 import com.example.repeate4mlesson1.databinding.FragmentOnboardBinding
 import com.example.repeate4mlesson1.ui.home.HomeFragment
+import com.example.repeate4mlesson1.utilits.Preferences
 
-class OnBoardFragment : Fragment(),OnBoardPageFragment.OnBoardListener {
+class OnBoardFragment : Fragment(), OnBoardPageFragment.OnBoardListener {
 
     private var binding:FragmentOnboardBinding? = null
     private var boardAdapter: OnBoardAdapter? = null
@@ -56,6 +58,8 @@ class OnBoardFragment : Fragment(),OnBoardPageFragment.OnBoardListener {
         initViews()
     }
     private fun initViews(){
+
+
         boardAdapter = OnBoardAdapter(
             childFragmentManager, lifecycle,boardModels)
 
@@ -67,15 +71,23 @@ class OnBoardFragment : Fragment(),OnBoardPageFragment.OnBoardListener {
     }
 
     override fun onNextClicked() {
-        binding?.viewpager?.setCurrentItem(+1,true)
-
+        binding?.apply {
+         viewpager.setCurrentItem(++viewpager.currentItem,true)
+        }
     }
 
 
     override fun onStartClicked() {
-         requireActivity().getSharedPreferences("",Context.MODE_PRIVATE)
-
+         findNavController().navigate(R.id.navigation_home)
+         Preferences(requireContext()).apply {
+             setHaveSeenOnBoarding()
+         }
         }
+
+    override fun getViewPager(): ViewPager2 {
+        return binding?.viewpager!!
+
+    }
     }
 
 

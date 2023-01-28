@@ -49,13 +49,13 @@ class HomeFragment : Fragment() {
 
     private fun initListeners() {
         setFragmentResultListener(
-            NewTaskFragment.NEW_TASK_RESUL_KEY,
+            NewTaskFragment.NEW_TASK_RESULT_KEY,
         ) { key, data ->
             val title = data.getString(NewTaskFragment.NEW_TASK_TITLE_KEY)
             val description = data.getString(NewTaskFragment.NEW_TASK_DESCRIPTION_KEY)
-
+            val pictureUri = data.getString(NewTaskFragment.NEW_TASK_PICTURE_KEY)
             if (title != null) {
-                val taskModel = TaskModel(title, description ?: "")
+                val taskModel = TaskModel(title, description ?: "", pictureUri)
                 taskAdapter.add(taskModel)
             }
         }
