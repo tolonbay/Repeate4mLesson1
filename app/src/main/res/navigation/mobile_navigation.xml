@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.repeate4mlesson1.ui.home.HomeFragment"
+        android:name="com.example.repeate4mlesson1.ui.home.new_task.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
@@ -24,7 +24,7 @@
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/newTaskFragment"
-        android:name="com.example.repeate4mlesson1.ui.home.NewTaskFragment"
+        android:name="com.example.repeate4mlesson1.ui.home.new_task.NewTaskFragment"
         android:label="New Task" />
     <fragment
         android:id="@+id/navigation_profile"
@@ -37,4 +37,8 @@
         android:label="Onboard" >
 
     </fragment>
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="com.example.repeate4mlesson1.ui.auth.AuthFragment"
+        android:label="Authentication" />
 </navigation>

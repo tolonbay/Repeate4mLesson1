@@ -12,18 +12,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
+import com.bumptech.glide.Glide
 import com.example.repeate4mlesson1.R
 import com.example.repeate4mlesson1.databinding.FragmentProfileBinding
 import com.example.repeate4mlesson1.utilits.Preferences
+import com.google.firebase.auth.FirebaseAuth
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
+
     private val imagePicker = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri ->
+        if (uri != null){
+            Preferences(requireContext()).savePrefImage(uri)
+        }
         binding?.image?.setImageURI(uri)
     }
 
@@ -47,35 +53,44 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initViews()
+        initListener()
+        quitProfile()
 
-        binding.image.setOnClickListener {
-            imagePicker.launch("image/*")
 
+    }
+
+    private fun quitProfile() {
+
+        binding.btnExit.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
         }
     }
 
     private fun initViews() {
-        val preferences = Preferences(requireContext())
+        val prefs = Preferences(requireContext())
 
-        //Если данные из SharedPreferences не null тогда их применим
-        if (preferences.getPrefTitle() != null) binding.etText.setText(
-            preferences.getPrefTitle()
-        )
-        if (preferences.getPrefImage() != "") {
-            binding.image.setImageURI(Uri.parse(preferences.getPrefImage()))
+
+        prefs.getPrefImage()?.let {
+            Glide.with(requireContext())
+                .load(it)
+                .circleCrop().into(binding.image!!)
+
+        }
+        prefs.getPrefTitle()?.let {
+            binding.etText?.setText(it)
+        }
+        }
+    private fun initListener(){
+        binding.image.setOnClickListener {
+            imagePicker.launch("image/*")
+        }
+
+        binding.btnSave.setOnClickListener{
+            val name = binding?.etText?.text.toString()
+            Preferences(requireContext()).setPrefTitle(name)
         }
     }
 
-
-
-        override fun onDestroyView() {
-            super.onDestroyView()
-            val preferences = Preferences(requireContext())
-            preferences.setPrefTitle(binding.etText.text.toString())
-            preferences.setPrefImage(uri.toString())
-
-
-        }
 
         override fun onDestroy() {
             super.onDestroy()

@@ -1,16 +1,17 @@
-package com.example.repeate4mlesson1.ui.home
+package com.example.repeate4mlesson1.ui.home.new_task
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
+import com.example.repeate4mlesson1.data.TaskEntity
 import com.example.repeate4mlesson1.databinding.FragmentNewTaskBinding
+import com.example.repeate4mlesson1.utilits.MainApplication
 import java.util.*
 
 class NewTaskFragment : Fragment() {
@@ -43,6 +44,7 @@ class NewTaskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
+
 //
 //        val cal = Calendar.getInstance()
 //        val month = cal.get(Calendar.MONTH)+1
@@ -52,22 +54,20 @@ class NewTaskFragment : Fragment() {
 //
 //        val date = "$day.$month.$year"
     }
+
     private fun initListeners(){
         binding?.btnSave?.setOnClickListener{
-            val bundle = bundleOf(
-                NEW_TASK_TITLE_KEY to binding?.etTitle?.text.toString(),
-                NEW_TASK_DESCRIPTION_KEY to binding?.etDescription?.text.toString(),
 
+            val entity = TaskEntity(
+                title = binding?.etTitle?.text.toString(),
+                description = binding?.etDescription?.text?.toString(),
+                pictureUri = pictureUri?.toString()
             )
-            if (pictureUri != null){
-                bundle.putString(NEW_TASK_PICTURE_KEY,pictureUri.toString())
-            }
 
-            setFragmentResult(
-                NEW_TASK_RESULT_KEY,
-                bundle
-            )
+            MainApplication.appDatabase?.taskDao?.insert(entity)
             findNavController().navigateUp()
+
+
         }
         binding?.ivPicker?.setOnClickListener {
             imagePicker.launch("image/*")

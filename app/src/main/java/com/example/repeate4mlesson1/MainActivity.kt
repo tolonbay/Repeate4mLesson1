@@ -4,12 +4,17 @@ import android.os.Bundle
 import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.repeate4mlesson1.databinding.ActivityMainBinding
+import com.example.repeate4mlesson1.utilits.MainApplication
 import com.example.repeate4mlesson1.utilits.Preferences
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,29 +33,40 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_profile
-
+                R.id.navigation_home,
+                R.id.navigation_dashboard,
+                R.id.navigation_notifications,
+                R.id.newTaskFragment,
+                R.id.navigation_profile,
+                R.id.onBoardFragment,
+                R.id.authFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        lifecycleScope.launch {
+            val session = MainApplication.appDatabase?.sessionDao?.get()
 
-        if (Preferences(this).getHaveSeenOnBoarding()){
-            navController.navigate(
-                R.id.navigation_home)
-        }else{
-            navController.navigate(
-                R.id.onBoardFragment
-            )
+            if(session == null){
+                navController.navigate(R.id.authFragment)
+            }else
+            {
+                if (Preferences(this@MainActivity).getHaveSeenOnBoarding()){
+                    navController.navigate(
+                        R.id.navigation_home)
+                }else{
+                    navController.navigate(
+                        R.id.onBoardFragment
+                    )
+                }
+
+            }
         }
 
-
-
-
-        navController.addOnDestinationChangedListener{ _, des, _ ->
+        navController.addOnDestinationChangedListener { _, des, _ ->
             navView.visibility =
-                if (des.id == R.id.newTaskFragment|| des.id == R.id.onBoardFragment) View.GONE else View.VISIBLE
+                if (des.id == R.id.newTaskFragment || des.id == R.id.onBoardFragment|| des.id == R.id.authFragment) View.GONE else View.VISIBLE
         }
     }
 }

@@ -5,4 +5,11 @@
     <string name="title_notifications">Notifications</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="by_letter">Cортировать по альфавиту</string>
+    <string name="by_time">Cортировать по времени</string>
+    <string name="phone_number">Phone number</string>
+    <string name="password">Password</string>
+    <string name="next">Next</string>
+    <string name="verification_code">Verification code</string>
+
 </resources>
