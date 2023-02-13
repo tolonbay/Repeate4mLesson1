@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "144311018040",
+    "project_id": "repeate4mlesson1",
+    "storage_bucket": "repeate4mlesson1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:144311018040:android:c652880531ab6ec8b93ccd",
+        "android_client_info": {
+          "package_name": "com.example.repeate4mlesson1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "144311018040-21146o7daof5gno2elpne0s5n4edgg6s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9uuxElp2bcjTb0AuVhMmusK545fxMeis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "144311018040-21146o7daof5gno2elpne0s5n4edgg6s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

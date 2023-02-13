@@ -43,14 +43,13 @@ class AuthFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initViews()
+//        initViews()
         initListeners()
     }
 
-    private fun initViews() {
-
-    }
-
+//    private fun initViews() {
+//
+//    }
 
 
     private fun initListeners() {
@@ -127,12 +126,8 @@ class AuthFragment: Fragment() {
 
                     Toast.makeText(
                         requireContext(),
-                        "Код подверждение отправлен на телефон",Toast.LENGTH_LONG).show()
-                }
-
-
-
-
+                        "Код подтверждение отправлен на телефон",Toast.LENGTH_LONG).show()
+                    }
             }).build()
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
@@ -141,7 +136,7 @@ class AuthFragment: Fragment() {
          binding?.progressBar?.visibility = View.VISIBLE
 
         val credential = PhoneAuthProvider.getCredential(
-            storedVerificationId!!,binding?.etVerificationCode?.text.toString()?: " "
+            storedVerificationId!!, binding?.etVerificationCode?.text.toString()
         )
         Firebase.auth.signInWithCredential(credential)
             .addOnCompleteListener{task ->
