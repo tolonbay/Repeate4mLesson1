@@ -2,13 +2,17 @@ package com.example.repeate4mlesson1.ui.home.new_task
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.os.Build
 import android.os.Bundle
 import android.view.*
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+
 import com.example.repeate4mlesson1.R
 import com.example.repeate4mlesson1.data.TaskEntity
 import com.example.repeate4mlesson1.databinding.FragmentHomeBinding
@@ -33,13 +37,22 @@ class HomeFragment : Fragment() {
 
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         @Suppress("DEPRECATION")
         setHasOptionsMenu(true)
+        requestPermission()
         initViews()
         initListeners()
         getActualTasks(appDatabase?.taskDao?.getAll())
+    }
+
+    private fun requestPermission(){
+        val launcher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ){}
+        launcher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
     }
 
 

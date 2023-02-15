@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.repeate4mlesson1.R
 import com.example.repeate4mlesson1.data.SessionEntity
 import com.example.repeate4mlesson1.databinding.FragmentAuthBinding
 import com.example.repeate4mlesson1.utilits.MainApplication
@@ -43,13 +44,13 @@ class AuthFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        initViews()
+        initViews()
         initListeners()
     }
 
-//    private fun initViews() {
-//
-//    }
+    private fun initViews() {
+
+    }
 
 
     private fun initListeners() {
@@ -82,19 +83,11 @@ class AuthFragment: Fragment() {
 
                 override fun onVerificationCompleted(credential: PhoneAuthCredential) {
 
-                    // This callback will be invoked in two situations:
-                    // 1 - Instant verification. In some cases the phone number can be instantly
-                    //     verified without needing to send or enter a verification code.
-                    // 2 - Auto-retrieval. On some devices Google Play services can automatically
-                    //     detect the incoming verification SMS and perform verification without
-                    //     user action.
                     Log.d("Test", "onVerificationCompleted:$credential")
                     signIn()
                 }
 
                 override fun onVerificationFailed(e: FirebaseException) {
-                    // This callback is invoked in an invalid request for verification is made,
-                    // for instance if the the phone number format is not valid.
                     Log.w("Test", "onVerificationFailed", e)
 
                     if (e is FirebaseAuthInvalidCredentialsException) {
@@ -115,12 +108,9 @@ class AuthFragment: Fragment() {
                     verificationId: String,
                     token: PhoneAuthProvider.ForceResendingToken
                 ) {
-                    // The SMS verification code has been sent to the provided phone number, we
-                    // now need to ask the user to enter the code and then construct a credential
-                    // by combining the code with a verification ID.
                     Log.d("Test", "onCodeSent:$verificationId")
 
-                    // Save verification ID and resending token so we can use them later
+
                     storedVerificationId = verificationId
                     storedToken = token
 
@@ -154,6 +144,16 @@ class AuthFragment: Fragment() {
 
         lifecycleScope.launch {
             MainApplication.appDatabase?.sessionDao?.save(entity)
+        }
+
+        if (Preferences(requireContext()).getHaveSeenOnBoarding()){
+            findNavController().navigate(
+               R.id.navigation_home
+            )
+        } else {
+            findNavController().navigate(
+                R.id.onBoardFragment
+            )
         }
 
     }

@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener{
-            Log.d("Test token",it.result)
+            Log.d("Test token", it.result)
         }
 
 
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 //
 //            }
 //        }
-
+//
         fun checkAuth(){
            if (Firebase.auth.currentUser == null){
                 navController.navigate(
